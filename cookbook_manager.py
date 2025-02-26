@@ -64,6 +64,26 @@ def get_all_cookbooks(conn):
     except Error as e:
         print(f"Error retrieving collection: {e}")
         return []
+
+def track_borrowed_cookbook(conn, cookbook_id, friend_name, date_borrowed):
+    """Track which friend borrowed your cookbook and when"""
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO borrow_history (cookbook_id, friend_name, date_borrowed, date_returned)
+            VALUES(?, ?, ?, NULL)
+        """, (cookbook_id, friend_name, date_borrowed))
+        conn.commit()
+        print(f"Cookbook ID {cookbook_id} borrowed by {friend_name} on {date_borrowed}")
+    except Error as e:
+            print(f"Error tracking borrowed cookbook: {e}")
+  
+def rotate_seasonal_collection(conn, season):
+    """Update display recommendations based on season"""
+    # Categorize books by season
+    # Suggest seasonal arrangements
+    # Update instagram_worthy status based on current season
+
 def main():
     # Establish connection to our artisanal database
     conn = create_connection()
